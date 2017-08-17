@@ -6,14 +6,14 @@
         android:id="@+id/activity_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.wingsofts.gankclient.ui.activity.MainActivity">
+        tools:context="com.qiaofei.gankio.ui.activity.MainActivity">
 
-        <com.wingsofts.gankclient.ui.widget.NoScrollViewPager
+        <com.qiaofei.gankio.ui.widget.NoScrollViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </com.wingsofts.gankclient.ui.widget.NoScrollViewPager>
+        </com.qiaofei.gankio.ui.widget.NoScrollViewPager>
         <android.support.design.widget.BottomNavigationView
             app:layout_behavior="@string/bye_burger_bottom_behavior"
             android:id="@+id/navigationView"

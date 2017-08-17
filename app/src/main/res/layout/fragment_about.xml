@@ -3,7 +3,7 @@
 
     <data>
 
-        <import type="com.wingsofts.gankclient.R" />
+        <import type="com.qiaofei.gankio.R" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
