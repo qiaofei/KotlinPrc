@@ -15,10 +15,7 @@ import com.qiaofei.gankio.router.GankClientUri
 import com.qiaofei.gankio.router.GankRouter
 import com.qiaofei.gankio.toast
 import com.qiaofei.gankio.ui.fragment.AndroidFragment
-import com.qiaofei.gankio.ui.fragment.FragmentHolder
-import com.qiaofei.gankio.ui.fragment.GirlFragment
 import com.qiaofei.gankio.ui.fragment.IOSFragment
-
 import kotlinx.android.synthetic.main.activity_main.*
 import java.net.URLEncoder
 import java.util.*
@@ -48,8 +45,8 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding>(), RandomContract.
       when (item.itemId) {
         R.id.menu_android -> tab = 0
         R.id.menu_ios -> tab = 1
-        R.id.menu_girl -> tab = 2
-        R.id.menu_about -> tab = 3
+/*        R.id.menu_girl -> tab = 2
+        R.id.menu_about -> tab = 3*/
       }
       viewPager.currentItem = tab
       false
@@ -71,8 +68,8 @@ class MainActivity : BaseBindingActivity<ActivityMainBinding>(), RandomContract.
     mFragments = ArrayList()
     mFragments.add(AndroidFragment.newInstance())
     mFragments.add(IOSFragment.newInstance())
-    mFragments.add(GirlFragment.newInstance())
-    mFragments.add(FragmentHolder())
+//    mFragments.add(GirlFragment.newInstance())
+//    mFragments.add(FragmentHolder())
   }
 
 }

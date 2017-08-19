@@ -24,65 +24,64 @@ import javax.inject.Inject
  */
 class AndroidFragment : BaseBingingFragment<ViewRecyclerBinding>(), FuckGoodsContract.View {
 
-    private var mList = ArrayList<FuckGoods>()
-    private lateinit var mAdapter: FuckGoodsAdapter
-    private var mPage = 1
-    @Inject lateinit var mPresenter: FuckGoodsPresenter
-    override fun createDataBinding(inflater: LayoutInflater?, container: ViewGroup?,
-                                   savedInstanceState: Bundle?): ViewRecyclerBinding {
-        return ViewRecyclerBinding.inflate(inflater, container, false)
-    }
+  private var mList = ArrayList<FuckGoods>()
+  private lateinit var mAdapter: FuckGoodsAdapter
+  private var mPage = 1
+  @Inject lateinit var mPresenter: FuckGoodsPresenter
+  override fun createDataBinding(inflater: LayoutInflater?, container: ViewGroup?,
+                                 savedInstanceState: Bundle?): ViewRecyclerBinding {
+    return ViewRecyclerBinding.inflate(inflater, container, false)
+  }
 
-    override fun initView() {
-        mAdapter = FuckGoodsAdapter(mList)
-        context.getMainComponent().plus(FuckGoodsModule(this)).inject(this)
-        with(mBinding!!) {
-            recyclerView.adapter = mAdapter
-            recyclerView.layoutManager = LinearLayoutManager(context)
+  override fun initView() {
+    mAdapter = FuckGoodsAdapter(mList)
+    context.getMainComponent().plus(FuckGoodsModule(this)).inject(this)
+    with(mBinding!!) {
+      recyclerView.adapter = mAdapter
+      recyclerView.layoutManager = LinearLayoutManager(context)
 
-            recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    if (!recyclerView?.canScrollVertically(1)!!) {
-                        mPresenter.getData(++mPage, ANDROID)
-                    }
-                }
-
-                override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                }
-            })
+      recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+          super.onScrolled(recyclerView, dx, dy)
+          if (!recyclerView?.canScrollVertically(1)!!) {
+            mPresenter.getData(++mPage, ANDROID)
+          }
         }
 
-        mPresenter.getData(mPage, ANDROID)
-
-        mAdapter.setOnItemClickListener {
-            pos ->
-            val url = URLEncoder.encode(mList[pos].url)
-            GankRouter.router(context, GankClientUri.DETAIL + url)
+        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+          super.onScrollStateChanged(recyclerView, newState)
         }
-
-
+      })
     }
 
-    override fun setData(results: List<FuckGoods>) {
-        mList.addAll(results)
-        mAdapter.notifyDataSetChanged()
+    mPresenter.getData(mPage, ANDROID)
+
+    mAdapter.setOnItemClickListener { pos ->
+      val url = URLEncoder.encode(mList[pos].url)
+      GankRouter.router(context, GankClientUri.DETAIL + url)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mPresenter.unSubscribe()
-    }
 
-    companion object {
-        val ANDROID = "ANDROID"
-        fun newInstance(): AndroidFragment {
-            val fragment = AndroidFragment()
-            val bundle = Bundle()
-            fragment.arguments = bundle
-            return fragment
-        }
+  }
+
+  override fun setData(results: List<FuckGoods>) {
+    mList.addAll(results)
+    mAdapter.notifyDataSetChanged()
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    mPresenter.unSubscribe()
+  }
+
+  companion object {
+    val ANDROID = "ANDROID"
+    fun newInstance(): AndroidFragment {
+      val fragment = AndroidFragment()
+      val bundle = Bundle()
+      fragment.arguments = bundle
+      return fragment
     }
+  }
 
 }

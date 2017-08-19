@@ -15,7 +15,7 @@
         android:enabled="true"
         app:showAsAction="ifRoom"
         android:title="iOS"/>
-    <item
+<!--    <item
 
         android:id="@+id/menu_girl"
         android:icon="@drawable/icon_girl"
@@ -30,5 +30,5 @@
         android:enabled="true"
         app:showAsAction="ifRoom"
         android:title="关于"
-        />
+        />-->
 </menu>

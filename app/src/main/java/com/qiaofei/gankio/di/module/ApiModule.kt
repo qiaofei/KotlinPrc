@@ -23,33 +23,42 @@ import javax.inject.Singleton
  */
 @Module(includes = arrayOf(AppModule::class))
 class ApiModule {
-    @Provides @Singleton fun provideRetrofit(baseUrl: HttpUrl, client: OkHttpClient, gson: Gson) =
-            Retrofit.Builder()
-                    .client(client)
-                    .baseUrl(baseUrl)
-                    .addConverterFactory(GsonConverterFactory.create(gson))
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
-                    .build()
+  @Provides
+  @Singleton
+  fun provideRetrofit(baseUrl: HttpUrl, client: OkHttpClient, gson: Gson) =
+    Retrofit.Builder()
+      .client(client)
+      .baseUrl(baseUrl)
+      .addConverterFactory(GsonConverterFactory.create(gson))
+      .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+      .build()
 
-    @Provides fun provideBaseUrl() = HttpUrl.parse("http://gank.io/api/")
-    @Provides fun provideOkhttp(context: Context,interceptor: HttpLoggingInterceptor): OkHttpClient {
-        val cacheSize = 1024 * 1024 * 10L
-        val cacheDir = File(context.cacheDir, "http")
-        val cache = Cache(cacheDir, cacheSize)
-        return OkHttpClient.Builder()
-                .cache(cache)
-                .addInterceptor(interceptor).build()
+  @Provides
+  fun provideBaseUrl() = HttpUrl.parse("http://gank.io/api/")
+
+  @Provides
+  fun provideOkhttp(context: Context, interceptor: HttpLoggingInterceptor): OkHttpClient {
+    val cacheSize = 1024 * 1024 * 10L
+    val cacheDir = File(context.cacheDir, "http")
+    val cache = Cache(cacheDir, cacheSize)
+    return OkHttpClient.Builder()
+      .cache(cache)
+      .addInterceptor(interceptor).build()
+  }
+
+  @Provides
+  fun provideInterceptor(): HttpLoggingInterceptor {
+    val interceptor = HttpLoggingInterceptor { msg ->
+      Log.d("okhttp", msg)
     }
-    @Provides fun provideInterceptor() :HttpLoggingInterceptor{
-        val interceptor = HttpLoggingInterceptor{
-            msg -> Log.d("okhttp",msg)
-        }
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
-        return interceptor
-    }
+    interceptor.level = HttpLoggingInterceptor.Level.BODY
+    return interceptor
+  }
 
-    @Provides fun provideGson() = GsonBuilder().create()
+  @Provides
+  fun provideGson() = GsonBuilder().create()
 
-    @Provides fun provideApi(retrofit:Retrofit) = retrofit.create(GankApi::class.java)
+  @Provides
+  fun provideApi(retrofit: Retrofit) = retrofit.create(GankApi::class.java)
 }
 
